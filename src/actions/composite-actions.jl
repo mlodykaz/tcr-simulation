@@ -7,7 +7,7 @@ and call other users to vote if a item should be exluded from the registry.
 If the mojority of users agree with the challenger, he receives a bonus an an item is removed.
 Otherwise, the challenger loses his deposit and item remains in the registry.
 """
-function challenge(registry, agents, deposit, voteFunc, redistributionFunc)
+function challenge(registry, agents, deposit, voteFunc, redistributionFunc,dispensation_pct)
     if (length(registry) >= 10)
         challenger = agents[rand(1:end)]
         evaluations = evaluateCandidateByAgent.(registry, challenger)
@@ -21,7 +21,7 @@ function challenge(registry, agents, deposit, voteFunc, redistributionFunc)
             if (!votingResult[1])
                 deleteat!(registry, challengedIndex)
             end
-            redistributionFunc(votingResult, challenger, deposit)
+            redistributionFunc(votingResult, challenger, deposit,dispensation_pct)
         # end
     end
 end

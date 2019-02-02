@@ -41,13 +41,13 @@ on the results he can either earn more tokens or loose the initial deposit.
 The exact logic for token redistribution is encoded as a parameter passed
 to the challenge method.
 """
-function simToken(num_of_steps, agents, redistribution, benchmarks)
+function simToken(num_of_steps, agents, redistribution, benchmarks,dispensation_pct)
     registry = []
     history = []
 
     for round in 1:num_of_steps
         application(registry, history, agents, proRataTokenVote)
-        challenge(registry, agents, 10, proRataTokenVote, redistribution)
+        challenge(registry, agents, 10, proRataTokenVote, redistribution,dispensation_pct)
     end
 
     [b(registry, agents) for b in benchmarks]

@@ -73,16 +73,21 @@ end
 
 function compareRedistribution()
     for acc in 0:5:100
-        challengerOnly = [simToken(1000, setupRandomAgents(100, acc, 20), onlyChallengerRewardRedistribution, [benchmarkRegistryMean])[1] for i in 1:20]
-        punishment = [simToken(1000, setupRandomAgents(100, acc, 20), punishmentRedistribution, [benchmarkRegistryMean])[1] for i in 1:20]
-        reward = [simToken(1000, setupRandomAgents(100, acc, 20), rewardRedistribution, [benchmarkRegistryMean])[1] for i in 1:20]
-        punishmentAndReward = [simToken(1000, setupRandomAgents(100, acc, 20), punishmentAndRewardRedistribution, [benchmarkRegistryMean])[1] for i in 1:20]
-        pBoost = mean(punishment) - mean(challengerOnly)
-        rBoost = mean(reward) - mean(challengerOnly)
-        prBoost = mean(punishmentAndReward) - mean(challengerOnly)
-        # test = pvalue(UnequalVarianceTTest(full, challengerOnly))
-        # significant = test < 0.05
-        println("$acc, $pBoost, $rBoost, $prBoost")
+        for dispensation_pct in 0.1:0.05:1
+            challengerOnly = [simToken(1000, setupRandomAgents(100, acc, 20), onlyChallengerRewardRedistribution, [benchmarkRegistryMean],dispensation_pct)[1] for i in 1:20]
+            punishment = [simToken(1000, setupRandomAgents(100, acc, 20), punishmentRedistribution, [benchmarkRegistryMean],dispensation_pct)[1] for i in 1:20]
+            reward = [simToken(1000, setupRandomAgents(100, acc, 20), rewardRedistribution, [benchmarkRegistryMean],dispensation_pct)[1] for i in 1:20]
+            punishmentAndReward = [simToken(1000, setupRandomAgents(100, acc, 20), punishmentAndRewardRedistribution, [benchmarkRegistryMean],dispensation_pct)[1] for i in 1:20]
+            punishmentAndRewardDispensation = [simToken(1000, setupRandomAgents(100, acc, 20), punishmentAndRewardRedistributionDispensation, [benchmarkRegistryMean],dispensation_pct)[1] for i in 1:20]
+            pBoost = mean(punishment) - mean(challengerOnly)
+            rBoost = mean(reward) - mean(challengerOnly)
+            prBoost = mean(punishmentAndReward) - mean(challengerOnly)
+            #test = pvalue(UnequalVarianceTTest(full, challengerOnly))
+            # significant = test < 0.05
+            println("$acc,$dispensation_pct, $pBoost, $rBoost, $prBoost")
+            #sr = mean(challengerOnly)
+            #println("$acc,$sr")
+        end
     end
 end
 
